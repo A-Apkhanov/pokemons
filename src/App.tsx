@@ -1,11 +1,9 @@
-import React from 'react';
+import {FC} from 'react';
 
-function App() {
-	return (
-		<div>
-			<h1>Hello world!</h1>
-		</div>
-	);
-}
+import {MainPage} from './components/pages/MainPage'
+
+export const App: FC = () => {
+	return (<MainPage/>);
+};
 
 export default App;
