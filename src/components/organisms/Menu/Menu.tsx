@@ -2,6 +2,8 @@ import { FC } from 'react';
 
 import classnames from 'classnames';
 
+import { LinkList } from '../../molecules/LinkList';
+
 import style from './style.module.css';
 
 import { MENU } from '../../../constants/menu';
@@ -24,15 +26,7 @@ export const Menu: FC<TMenu> = ({ isActive, onClickMenu }) => {
 		>
 			<div className={style.overlay} />
 			<div className={style.menuItems}>
-				<ul>
-					{MENU.map(({ title, to }, index) => (
-						<li key={index}>
-							<a href={to} onClick={handleCloseMenu}>
-								{title}
-							</a>
-						</li>
-					))}
-				</ul>
+				<LinkList items={MENU} onClickLink={handleCloseMenu} />
 			</div>
 		</div>
 	);
