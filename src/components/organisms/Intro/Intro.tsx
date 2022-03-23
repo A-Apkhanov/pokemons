@@ -21,7 +21,7 @@ export const Intro: FC<TIntroProps> = ({ title, description }) => {
 			<div className={style.container}>
 				{title && <h1>{title}</h1>}
 				{description && <p>{description}</p>}
-				<Button onClick={handleClickButton}>Start Game</Button>
+				<Button onClick={handleClickButton}>Новая игра</Button>
 			</div>
 		</main>
 	);
