@@ -1,5 +1,6 @@
 import { FC, ReactNode } from 'react';
 
+import '../../../constants/variables.css';
 import style from './style.module.css';
 
 type TButtonProps = {
@@ -13,7 +14,7 @@ export const Button: FC<TButtonProps> = ({ children, onClick }) => {
 	};
 
 	return (
-		<button className={style.slidingButton} onClick={handleClickButton}>
+		<button className={style.button} onClick={handleClickButton}>
 			{children}
 		</button>
 	);
