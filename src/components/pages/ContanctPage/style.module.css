@@ -15,12 +15,6 @@
     margin: 0 auto;
 }
 
-.root p {
-    font-size: 1rem;
-    padding-bottom: 1.5rem;
-    line-height: 1.9rem;
-}
-
 .root .desc.full {
     grid-column-end: span 4;
     margin-bottom: 2rem;
@@ -42,3 +36,35 @@
         grid-column-end: -1;
     }
 }
+
+/***** Contacts Items: Hover Animation *****/
+.contactsList ul {
+    list-style-type: none !important;
+}
+
+.contactsList ul li a {
+    font-size: 1.4rem;
+}
+
+.contactsList ul li a::after {
+    content: ' »';
+    font-size: 1.4rem;
+    color: transparent;
+    transition: color 200ms;
+}
+
+.contactsList ul li a:hover::after {
+    content: ' »';
+    color: var(--magenta);
+}
+
+.contactsList a,
+.contactsList a:visited {
+    color: #fafafa;
+}
+
+.contactsList a:hover,
+.contactsList a:active {
+    color: var(--magenta);
+}
+

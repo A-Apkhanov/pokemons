@@ -1,18 +1,18 @@
 export const MENU = [
 	{
-		title: 'HOME',
+		title: 'ГЛАВНАЯ',
 		to: '/home',
 	},
 	{
-		title: 'GAME',
+		title: 'ИГРА',
 		to: '/game',
 	},
 	{
-		title: 'ABOUT',
+		title: 'ПРАВИЛА',
 		to: '/about',
 	},
 	{
-		title: 'CONTACT',
+		title: 'КОНТАКТЫ',
 		to: '/contact',
 	},
 ];
