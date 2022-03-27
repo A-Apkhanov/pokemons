@@ -1,0 +1,44 @@
+.root {
+    background-color: #202736;
+    background-image: url(../../assets/stars.svg);
+    background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+    min-height: calc(100vh - 100px);
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.root .wrapper {
+    padding: 5rem 1rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.root p {
+    font-size: 1rem;
+    padding-bottom: 1.5rem;
+    line-height: 1.9rem;
+}
+
+.root .desc.full {
+    grid-column-end: span 4;
+    margin-bottom: 2rem;
+}
+
+.root .desc {
+    grid-column-end: span 2;
+    background: #ffffff58;
+    padding: 2rem;
+    text-align: justify;
+}
+
+@media only screen and (max-width: 1149px) {
+    .root .desc.full {
+        grid-column-end: -1;
+    }
+
+    .root .desc {
+        grid-column-end: -1;
+    }
+}
