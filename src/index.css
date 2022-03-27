@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-@import 'https://fonts.googleapis.com/css?family=Overlock:400,400i,700|Oleo+Script';
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
 
 html, body {
     height: 100%;
@@ -17,7 +17,7 @@ body {
     color: #252934;
     background: #fafafa;
     font-size: 62.5%;
-    font-family: 'Overlock', Arial, Helvetica, sans-serif;
+    font-family: 'Amatic SC', Arial, Helvetica, sans-serif;
     overflow-x: hidden;
 }
 

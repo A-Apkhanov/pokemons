@@ -15,12 +15,6 @@
     margin: 0 auto;
 }
 
-.root p {
-    font-size: 1rem;
-    padding-bottom: 1.5rem;
-    line-height: 1.9rem;
-}
-
 .root .desc.full {
     grid-column-end: span 4;
     margin-bottom: 2rem;

@@ -125,9 +125,9 @@
 .container h1 {
     font-size: 65px;
     font-weight: normal;
-    font-style: italic;
     color: #fafafa;
     line-height: 65px;
+    margin-bottom: 6px;
 }
 
 .container p {
@@ -135,7 +135,7 @@
     font-weight: normal;
     color: #fafafa;
     line-height: 32px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 649px) {
