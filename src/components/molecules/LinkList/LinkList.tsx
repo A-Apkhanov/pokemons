@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 type TLink = {
 	title: string;
@@ -6,17 +7,31 @@ type TLink = {
 };
 type TLinkList = {
 	items: Array<TLink>;
-	onClickLink: () => void;
+	onClickLink?: () => void;
+	useReactRouterDom?: boolean;
 };
 
-export const LinkList: FC<TLinkList> = ({ items, onClickLink }) => {
+export const LinkList: FC<TLinkList> = ({
+	items,
+	onClickLink,
+	useReactRouterDom = false,
+}) => {
+	const handleClickLink = () => {
+		onClickLink && onClickLink();
+	};
 	return (
 		<ul>
 			{items.map(({ title, to }, index) => (
 				<li key={index}>
-					<a href={to} onClick={onClickLink}>
-						{title}
-					</a>
+					{useReactRouterDom ? (
+						<Link to={to} onClick={handleClickLink}>
+							{title}
+						</Link>
+					) : (
+						<a href={to} onClick={handleClickLink}>
+							{title}
+						</a>
+					)}
 				</li>
 			))}
 		</ul>

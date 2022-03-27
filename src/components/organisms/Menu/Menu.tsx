@@ -26,7 +26,11 @@ export const Menu: FC<TMenu> = ({ isActive, onClickMenu }) => {
 		>
 			<div className={style.overlay} />
 			<div className={style.menuItems}>
-				<LinkList items={MENU} onClickLink={handleCloseMenu} />
+				<LinkList
+					items={MENU}
+					onClickLink={handleCloseMenu}
+					useReactRouterDom
+				/>
 			</div>
 		</div>
 	);
