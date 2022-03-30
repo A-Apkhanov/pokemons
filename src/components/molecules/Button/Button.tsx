@@ -5,7 +5,7 @@ import style from './style.module.css';
 
 type TButtonProps = {
 	children: ReactNode;
-	onClick: () => void;
+	onClick?: () => void;
 };
 
 export const Button: FC<TButtonProps> = ({ children, onClick }) => {
