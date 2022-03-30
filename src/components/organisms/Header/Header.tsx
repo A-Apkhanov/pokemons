@@ -2,6 +2,8 @@ import { FC, useState } from 'react';
 
 import { Navigation } from '../Navigation';
 import { Menu } from '../Menu';
+import { Modal } from '../Modal';
+import { LoginForm } from '../LoginForm';
 
 type THeader = {
 	bgActive?: boolean;
@@ -19,6 +21,10 @@ export const Header: FC<THeader> = ({ bgActive = false }) => {
 		setOpenModal((prevState) => !prevState);
 	};
 
+	const handleSubmitLoginForm = () => {
+		console.log('####: Авторизация');
+	};
+
 	return (
 		<header>
 			<Navigation
@@ -28,6 +34,12 @@ export const Header: FC<THeader> = ({ bgActive = false }) => {
 				bgActive={bgActive}
 			/>
 			<Menu isActive={isActiveMenu} onClickMenu={handleShowMenu} />
+			<Modal isOpen={isOpenModal} title='Вход' onCloseModal={handleClickLogin}>
+				<LoginForm
+					onSubmit={handleSubmitLoginForm}
+					isResetField={isOpenModal}
+				/>
+			</Modal>
 		</header>
 	);
 };
