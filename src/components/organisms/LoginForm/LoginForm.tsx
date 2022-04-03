@@ -6,9 +6,15 @@ import { Button } from '../../molecules/Button';
 import '../../../constants/variables.css';
 import style from './style.module.css';
 
+type TAuthData = {
+	type: 'login' | 'signup';
+	email: string;
+	password: string;
+};
+
 type TLoginForm = {
 	isResetField?: boolean;
-	onSubmit: () => void;
+	onSubmit: ({}: TAuthData) => void;
 };
 
 export const LoginForm: FC<TLoginForm> = ({
@@ -21,7 +27,8 @@ export const LoginForm: FC<TLoginForm> = ({
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		onSubmit && onSubmit();
+		onSubmit &&
+			onSubmit({ type: isLogin ? 'login' : 'signup', email, password });
 		setEmail('');
 		setPassword('');
 	};

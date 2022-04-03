@@ -8,9 +8,12 @@ import { GamePage } from './components/pages/GamePage';
 import { Header } from './components/organisms/Header';
 import { Footer } from './components/organisms/Footer';
 
+import { FireBaseContext } from './context/firebaseContext';
+import { fire } from './services/firebase';
+
 export const App: FC = () => {
 	return (
-		<>
+		<FireBaseContext.Provider value={fire}>
 			<Header />
 			<Routes>
 				<Route path='/' element={<MainPage />} />
@@ -20,7 +23,7 @@ export const App: FC = () => {
 				<Route path='/contact' element={<ContactPage />} />
 			</Routes>
 			<Footer />
-		</>
+		</FireBaseContext.Provider>
 	);
 };
 
