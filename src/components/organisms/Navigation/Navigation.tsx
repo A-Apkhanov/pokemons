@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import classnames from 'classnames';
 
@@ -39,9 +40,9 @@ export const Navigation: FC<TNavigation> = ({
 					<div className={style.loginWrap} onClick={onClickLogin}>
 						<LoginSVG />
 					</div>
-					<a className={style.loginWrap} href='/user'>
+					<Link className={style.loginWrap} to='/user'>
 						<UserSVG />
-					</a>
+					</Link>
 					<div
 						className={classnames(style.menuButton, {
 							[style.active]: isActive,
