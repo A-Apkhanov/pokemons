@@ -27,6 +27,7 @@ export class Firebase {
 	constructor() {
 		this.database = firebase.database();
 		this.auth = firebase.auth();
+		this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 	}
 
 	createUserWithEmail = ({ email, password }: TUser) =>
@@ -36,6 +37,10 @@ export class Firebase {
 		this.auth.signInWithEmailAndPassword(email, password);
 
 	singOut = () => this.auth.signOut();
+
+	observerUser = (
+		cb: firebase.Observer<any, Error> | ((a: firebase.User | null) => any)
+	) => this.auth.onAuthStateChanged(cb);
 
 	setData = (url: string, data: any) => {
 		this.database.ref(url).set(data);

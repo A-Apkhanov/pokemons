@@ -1,10 +1,13 @@
 import { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import classnames from 'classnames';
 
 import { ReactComponent as LoginSVG } from '../../assets/login.svg';
 import { ReactComponent as UserSVG } from '../../assets/user.svg';
+
+import { selectUserAuth } from '../../../features/user/selectors';
 
 import style from './style.module.css';
 
@@ -22,10 +25,13 @@ export const Navigation: FC<TNavigation> = ({
 	bgActive,
 }) => {
 	const [activeMenu, isActiveMenu] = useState(true);
+	const navigate = useNavigate();
+	const isAuth = useSelector(selectUserAuth);
 
 	const handleClickMenu = () => {
 		onClickMenuIcon && onClickMenuIcon();
 		isActiveMenu((prevState) => !prevState);
+		navigate('/user');
 	};
 
 	return (
@@ -37,12 +43,15 @@ export const Navigation: FC<TNavigation> = ({
 			<div className={style.navWrapper}>
 				<p className={style.brand}>LOGO</p>
 				<div className={style.loginAndMenu}>
-					<div className={style.loginWrap} onClick={onClickLogin}>
-						<LoginSVG />
-					</div>
-					<Link className={style.loginWrap} to='/user'>
-						<UserSVG />
-					</Link>
+					{isAuth ? (
+						<Link className={style.loginWrap} to='user'>
+							<UserSVG />
+						</Link>
+					) : (
+						<div className={style.loginWrap} onClick={onClickLogin}>
+							<LoginSVG />
+						</div>
+					)}
 					<div
 						className={classnames(style.menuButton, {
 							[style.active]: isActive,
