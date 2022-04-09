@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import classnames from 'classnames';
@@ -26,13 +26,11 @@ export const Navigation: FC<TNavigation> = ({
 	bgActive,
 }) => {
 	const [activeMenu, isActiveMenu] = useState(true);
-	const navigate = useNavigate();
 	const isAuth = useSelector(selectUserAuth);
 
 	const handleClickMenu = () => {
 		onClickMenuIcon && onClickMenuIcon();
 		isActiveMenu((prevState) => !prevState);
-		navigate('/user');
 	};
 
 	return (

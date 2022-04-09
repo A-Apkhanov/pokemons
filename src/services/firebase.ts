@@ -46,6 +46,13 @@ export class Firebase {
 		this.database.ref(url).set(data);
 	};
 
+	getDataUser = async (userUID: string) => {
+		return await this.database
+			.ref('/' + userUID)
+			.once('value')
+			.then((snapshot) => snapshot.val());
+	};
+
 	getNewKey = (url: string) => {
 		return this.database.ref().child(url).push().key;
 	};
