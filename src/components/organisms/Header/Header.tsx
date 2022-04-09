@@ -7,6 +7,7 @@ import { Modal } from '../Modal';
 import { LoginForm } from '../LoginForm';
 
 import { fire } from '../../../services/firebase';
+import { game } from '../../../services/game';
 
 import { createUser, singUser } from '../../../features/user/thunks';
 
@@ -23,7 +24,6 @@ type TAuthData = {
 export const Header: FC<THeader> = ({ bgActive = false }) => {
 	const [isActiveMenu, setActiveMenu] = useState(false);
 	const [isOpenModal, setOpenModal] = useState(false);
-	const [userUid, setUserUid] = useState<string | null>('');
 	const dispatch = useDispatch();
 
 	const handleShowMenu = () => {
@@ -39,14 +39,10 @@ export const Header: FC<THeader> = ({ bgActive = false }) => {
 			await loginSingUpUser(authData);
 			const userUid = localStorage.getItem('userUid');
 
-			console.log('####: userUid', userUid);
-
 			if (authData.type === 'signup' && userUid) {
-				const pokemonsStart = await fetch(
-					'https://reactmarathon-api.herokuapp.com/api/pokemons/starter'
-				).then((res) => res.json());
+				const startedPackPokemons = await game.getStartedPackPokemons();
 
-				for (const item of pokemonsStart.data) {
+				for (const item of startedPackPokemons) {
 					const newKey = fire.getNewKey(`${userUid}/pokemons/`);
 					await fire.setData(`${userUid}/pokemons/${newKey}`, item);
 				}
