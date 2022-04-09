@@ -9,6 +9,7 @@ import { GamePage } from './components/pages/GamePage';
 import { UserPage } from './components/pages/UserPage';
 import { Header } from './components/organisms/Header';
 import { Footer } from './components/organisms/Footer';
+import { PrivateRoute } from './routes/PrivateRoute';
 
 import { updateUser } from './features/user/thunks';
 
@@ -25,10 +26,24 @@ export const App: FC = () => {
 			<Routes>
 				<Route path='/' element={<MainPage />} />
 				<Route path='/home' element={<MainPage />} />
-				<Route path='/game' element={<GamePage />} />
 				<Route path='/about' element={<AboutPage />} />
 				<Route path='/contact' element={<ContactPage />} />
-				<Route path='/user' element={<UserPage />} />
+				<Route
+					path='/game'
+					element={
+						<PrivateRoute redirectTo='/'>
+							<GamePage />
+						</PrivateRoute>
+					}
+				/>
+				<Route
+					path='/user'
+					element={
+						<PrivateRoute redirectTo='/'>
+							<UserPage />
+						</PrivateRoute>
+					}
+				/>
 			</Routes>
 			<Footer />
 		</>

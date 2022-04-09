@@ -13,7 +13,7 @@ import style from './style.module.css';
 
 export const ContactPage: FC = () => {
 	return (
-		<div className={style.root}>
+		<main className={style.root}>
 			<div className={classnames(style.root, style.wrapper)}>
 				<div className={classnames(style.desc, style.full)}>
 					<PageTitle>Контакты</PageTitle>
@@ -23,6 +23,6 @@ export const ContactPage: FC = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 };

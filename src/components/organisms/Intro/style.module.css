@@ -5,7 +5,7 @@
     background-size: cover;
     position: relative;
     max-height: 100vh;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 50px);
     margin: 0 auto;
     z-index: 1;
 }
@@ -76,10 +76,9 @@
 }
 
 .moon {
-    position: absolute;
-    top: 0;
-    right: 0;
     position: fixed;
+    top: 60px;
+    right: 0;
     background: url(https://raw.githubusercontent.com/yagoestevez/fcc-portfolio/master/src/Images/Moon.svg?sanitize=true) right 150% no-repeat;
     background-size: 30% 30%;
     background-attachment: fixed;
@@ -97,7 +96,7 @@
     }
     to {
         opacity: 1;
-        background-position: top right;
+        background-position: top 60px right;
     }
 }
 

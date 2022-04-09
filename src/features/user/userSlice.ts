@@ -5,15 +5,18 @@ export const userSlice = createSlice({
 	initialState: {
 		isAuth: false,
 		email: '',
+		uid: '',
 	},
 	reducers: {
 		setUser: (state, action) => {
 			state.isAuth = true;
-			state.email = action.payload;
+			state.email = action.payload.email;
+			state.uid = action.payload.uid;
 		},
 		delUser: (state) => {
 			state.isAuth = false;
 			state.email = '';
+			state.uid = '';
 		},
 	},
 });
