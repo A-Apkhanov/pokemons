@@ -9,7 +9,7 @@ import style from './style.module.css';
 
 export const AboutPage: FC = () => {
 	return (
-		<div className={style.root}>
+		<main className={style.root}>
 			<div className={classnames(style.root, style.wrapper)}>
 				<div className={classnames(style.desc, style.full)}>
 					<PageTitle>Правила</PageTitle>
@@ -33,6 +33,6 @@ export const AboutPage: FC = () => {
 					</Text>
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 };

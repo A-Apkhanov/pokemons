@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 import { ReactComponent as LoginSVG } from '../../assets/login.svg';
 import { ReactComponent as UserSVG } from '../../assets/user.svg';
+import { ReactComponent as LogoSVG } from '../../assets/logo.svg';
 
 import { selectUserAuth } from '../../../features/user/selectors';
 
@@ -41,7 +42,9 @@ export const Navigation: FC<TNavigation> = ({
 			})}
 		>
 			<div className={style.navWrapper}>
-				<p className={style.brand}>LOGO</p>
+				<div className={style.logoWrap}>
+					<LogoSVG />
+				</div>
 				<div className={style.loginAndMenu}>
 					{isAuth ? (
 						<Link className={style.loginWrap} to='user'>

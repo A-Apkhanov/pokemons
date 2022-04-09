@@ -8,12 +8,7 @@ import { LoginForm } from '../LoginForm';
 
 import { fire } from '../../../services/firebase';
 
-import {
-	createUser,
-	singUser,
-	updateUser,
-} from '../../../features/user/thunks';
-import { selectUserEmail } from '../../../features/user/selectors';
+import { createUser, singUser } from '../../../features/user/thunks';
 
 type THeader = {
 	bgActive?: boolean;
@@ -25,31 +20,10 @@ type TAuthData = {
 	password: string;
 };
 
-// const loginSingUpUser = async ({ type, email, password }: TAuthData) => {
-// 	// switch (type) {
-// 	// 	case 'login':
-// 	// 		return await fire
-// 	// 			.singWithEmail({ email, password })
-// 	// 			.then((userCredential) => userCredential.user);
-// 	// 	case 'signup':
-// 	// 		return await fire
-// 	// 			.createUserWithEmail({ email, password })
-// 	// 			.then((userCredential) => userCredential.user);
-// 	// }
-//
-// 	switch (type) {
-// 		case 'login':
-// 			return useDispatch();
-// 		case 'signup':
-// 			return await fire
-// 				.createUserWithEmail({ email, password })
-// 				.then((userCredential) => userCredential.user);
-// 	}
-// };
-
 export const Header: FC<THeader> = ({ bgActive = false }) => {
 	const [isActiveMenu, setActiveMenu] = useState(false);
 	const [isOpenModal, setOpenModal] = useState(false);
+	const [userUid, setUserUid] = useState<string | null>('');
 	const dispatch = useDispatch();
 
 	const handleShowMenu = () => {
@@ -62,27 +36,29 @@ export const Header: FC<THeader> = ({ bgActive = false }) => {
 
 	const handleSubmitLoginForm = async (authData: TAuthData) => {
 		try {
-			const user = await loginSingUpUser(authData);
+			await loginSingUpUser(authData);
+			const userUid = localStorage.getItem('userUid');
 
-			if (authData.type === 'signup' && user) {
+			console.log('####: userUid', userUid);
+
+			if (authData.type === 'signup' && userUid) {
 				const pokemonsStart = await fetch(
 					'https://reactmarathon-api.herokuapp.com/api/pokemons/starter'
 				).then((res) => res.json());
 
-				// for (const item of pokemonsStart.data) {
-				// 	const newKey = fire.getNewKey(`${user.uid}/pokemons/`);
-				// 	await fire.setData(`${user.uid}/pokemons/${newKey}`, item);
-				// }
+				for (const item of pokemonsStart.data) {
+					const newKey = fire.getNewKey(`${userUid}/pokemons/`);
+					await fire.setData(`${userUid}/pokemons/${newKey}`, item);
+				}
 			}
 
-			// user && localStorage.setItem('userUid', user.uid);
 			handleClickLogin();
 		} catch (error) {
 			console.log('Wrong!', (error as Error).message);
 		}
 	};
 
-	const loginSingUpUser = async ({ type, email, password }: TAuthData) => {
+	const loginSingUpUser = ({ type, email, password }: TAuthData) => {
 		switch (type) {
 			case 'login':
 				return dispatch(singUser({ email, password }));
