@@ -12,6 +12,10 @@ import {
 	selectPokemonsData,
 	selectPokemonsIsLoading,
 } from '../../../features/pokemons/selectors';
+import {
+	addCardPlayerOne,
+	delCardPlayerOne,
+} from '../../../features/playerOne/playerOneSlice';
 
 import { IPokemons } from '../../../types';
 
@@ -30,6 +34,12 @@ export const StartGamePage: FC = () => {
 
 	const handleClickCard = (key: string) => {
 		const pokemon = { ...pokemonsState[key] };
+
+		if (pokemon.selected) {
+			dispatch(delCardPlayerOne(key));
+		} else {
+			dispatch(addCardPlayerOne({ [key]: pokemon }));
+		}
 
 		setPokemonsState((prevState) => ({
 			...prevState,
