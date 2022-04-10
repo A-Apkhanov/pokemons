@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { MainPage } from './components/pages/MainPage';
@@ -15,6 +15,7 @@ import { updateUser } from './features/user/thunks';
 
 export const App: FC = () => {
 	const dispatch = useDispatch();
+	const match = useMatch('/game');
 
 	useEffect(() => {
 		dispatch(updateUser());
@@ -22,7 +23,7 @@ export const App: FC = () => {
 
 	return (
 		<>
-			<Header />
+			<Header bgActive={!!match} />
 			<Routes>
 				<Route path='/' element={<MainPage />} />
 				<Route path='/home' element={<MainPage />} />

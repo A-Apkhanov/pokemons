@@ -20,12 +20,24 @@ import style from './style.module.css';
 export const StartGamePage: FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const [pokemonsState, setPokemonsState] = useState<IPokemons | {}>({});
+	const [pokemonsState, setPokemonsState] = useState<IPokemons>({});
 	const isLoading = useSelector(selectPokemonsIsLoading);
 	const pokemons = useSelector(selectPokemonsData);
 
 	const handleStartGame = () => {
 		navigate('/game/board');
+	};
+
+	const handleClickCard = (key: string) => {
+		const pokemon = { ...pokemonsState[key] };
+
+		setPokemonsState((prevState) => ({
+			...prevState,
+			[key]: {
+				...prevState[key],
+				selected: !prevState[key].selected,
+			},
+		}));
 	};
 
 	useEffect(() => {
@@ -37,7 +49,7 @@ export const StartGamePage: FC = () => {
 	}, []);
 
 	return (
-		<Layout id='game' title='Game'>
+		<Layout id='game' title='Игра'>
 			{isLoading && (
 				<div className={style.flex}>
 					<Loader />
@@ -46,7 +58,7 @@ export const StartGamePage: FC = () => {
 			{isLoading || (
 				<>
 					<div className={style.flex}>
-						<Button onClick={handleStartGame}>START GAME</Button>
+						<Button onClick={handleStartGame}>СТАРТ</Button>
 					</div>
 					<div className={style.grid}>
 						{Object.entries(pokemonsState).map(
@@ -61,7 +73,7 @@ export const StartGamePage: FC = () => {
 									active
 									className={style.card}
 									onClickCard={() => {
-										console.log('### KEY:', key);
+										handleClickCard(key);
 									}}
 									selected={selected}
 								/>

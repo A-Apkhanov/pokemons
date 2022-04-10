@@ -12,7 +12,7 @@ import { game } from '../../../services/game';
 import { createUser, singUser } from '../../../features/user/thunks';
 
 type THeader = {
-	bgActive?: boolean;
+	bgActive: boolean;
 };
 
 type TAuthData = {
@@ -21,7 +21,7 @@ type TAuthData = {
 	password: string;
 };
 
-export const Header: FC<THeader> = ({ bgActive = false }) => {
+export const Header: FC<THeader> = ({ bgActive }) => {
 	const [isActiveMenu, setActiveMenu] = useState(false);
 	const [isOpenModal, setOpenModal] = useState(false);
 	const dispatch = useDispatch();
