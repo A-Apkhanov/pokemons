@@ -40,9 +40,9 @@ export const Navigation: FC<TNavigation> = ({
 			})}
 		>
 			<div className={style.navWrapper}>
-				<div className={style.logoWrap}>
+				<Link className={style.logoWrap} to='/'>
 					<LogoSVG />
-				</div>
+				</Link>
 				<div className={style.loginAndMenu}>
 					{isAuth ? (
 						<Link className={style.loginWrap} to='user'>

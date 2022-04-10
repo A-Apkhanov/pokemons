@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../../molecules/Button';
 
@@ -10,9 +11,12 @@ type TIntroProps = {
 };
 
 export const Intro: FC<TIntroProps> = ({ title, description }) => {
+	const navigate = useNavigate();
+
 	const handleClickButton = () => {
-		console.log('####: Hello');
+		navigate('/game');
 	};
+
 	return (
 		<main className={style.root}>
 			<div className={style.forest} />
