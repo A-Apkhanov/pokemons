@@ -17,6 +17,7 @@ export const Menu: FC<TMenu> = ({ isActive, onClickMenu }) => {
 	const handleCloseMenu = () => {
 		onClickMenu && onClickMenu();
 	};
+
 	return (
 		<div
 			className={classnames(style.menuContainer, {
