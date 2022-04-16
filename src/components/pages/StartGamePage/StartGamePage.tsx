@@ -16,6 +16,7 @@ import {
 	addCardPlayerOne,
 	delCardPlayerOne,
 } from '../../../features/playerOne/playerOneSlice';
+import { selectPlayerOneData } from '../../../features/playerOne/selectors';
 
 import { IPokemons } from '../../../types';
 
@@ -27,6 +28,7 @@ export const StartGamePage: FC = () => {
 	const [pokemonsState, setPokemonsState] = useState<IPokemons>({});
 	const isLoading = useSelector(selectPokemonsIsLoading);
 	const pokemons = useSelector(selectPokemonsData);
+	const playerCards = useSelector(selectPlayerOneData);
 
 	const handleStartGame = () => {
 		navigate('/game/board');
@@ -68,7 +70,12 @@ export const StartGamePage: FC = () => {
 			{isLoading || (
 				<>
 					<div className={style.flex}>
-						<Button onClick={handleStartGame}>СТАРТ</Button>
+						<Button
+							onClick={handleStartGame}
+							disabled={Object.keys(playerCards).length < 5}
+						>
+							СТАРТ
+						</Button>
 					</div>
 					<div className={style.grid}>
 						{Object.entries(pokemonsState).map(
