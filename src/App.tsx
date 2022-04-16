@@ -15,7 +15,7 @@ import { updateUser } from './features/user/thunks';
 
 export const App: FC = () => {
 	const dispatch = useDispatch();
-	const match = useMatch('/game');
+	const match = useMatch('/game/*');
 
 	useEffect(() => {
 		dispatch(updateUser());
@@ -30,7 +30,7 @@ export const App: FC = () => {
 				<Route path='/about' element={<AboutPage />} />
 				<Route path='/contact' element={<ContactPage />} />
 				<Route
-					path='/game'
+					path='/game/*'
 					element={
 						<PrivateRoute redirectTo='/'>
 							<GamePage />

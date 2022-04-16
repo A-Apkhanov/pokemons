@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fire } from '../../services/firebase';
 
 export const getUserPokemons = createAsyncThunk(
-	'user/createPokemonsThunk',
+	'pokemons/createPokemonsThunk',
 	async () => {
 		const userUid = localStorage.getItem('userUid');
 		if (userUid) {

@@ -1,7 +1,14 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 import { StartGamePage } from '../StartGamePage';
 
 export const GamePage: FC = () => {
-	return <StartGamePage />;
+	return (
+		<Routes>
+			<Route path='/' element={<StartGamePage />} />
+			<Route path='/board' element={<p>BOARD</p>} />
+			<Route path='/finish' element={<p>FINISH</p>} />
+		</Routes>
+	);
 };
