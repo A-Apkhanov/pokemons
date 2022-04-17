@@ -28,3 +28,13 @@ export type TPokemon = {
 export interface IPokemons {
 	[key: string]: TPokemon;
 }
+
+export type TCard = TPokemon & {
+	possession: string;
+	key: string;
+	player?: 1 | 2;
+};
+
+export type TBoard = { position: number; card: TCard }[];
+
+export type TStatePlayer = TCard[];
