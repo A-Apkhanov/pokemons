@@ -1,13 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getCardsPlayerTwo } from './thunks';
 
+import { IPokemons } from '../../types';
+
+const initialState: { data: IPokemons; isLoading: boolean; error: null } = {
+	isLoading: false,
+	data: {},
+	error: null,
+};
+
 export const playerTwoSlice = createSlice({
 	name: 'playerTwo',
-	initialState: {
-		isLoading: false,
-		data: {},
-		error: null,
-	},
+	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(getCardsPlayerTwo.pending, (state) => {
