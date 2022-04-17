@@ -2,11 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { IPokemons } from '../../types';
 
+const initialState: { data: IPokemons } = {
+	data: {},
+};
+
 export const playerOneSlice = createSlice({
 	name: 'playerOne',
-	initialState: {
-		data: {},
-	},
+	initialState,
 	reducers: {
 		addCardPlayerOne: (
 			state: { data: IPokemons },

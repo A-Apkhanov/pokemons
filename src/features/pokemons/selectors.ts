@@ -1,5 +1,7 @@
-const selectPokemonsIsLoading = (state: any) => state.pokemons.isLoading;
-const selectPokemonsData = (state: any) => state.pokemons.data;
-const selectPokemonsError = (state: any) => state.pokemons.error;
+import { RootState } from '../../store';
+
+const selectPokemonsIsLoading = (state: RootState) => state.pokemons.isLoading;
+const selectPokemonsData = (state: RootState) => state.pokemons.data;
+const selectPokemonsError = (state: RootState) => state.pokemons.error;
 
 export { selectPokemonsIsLoading, selectPokemonsData, selectPokemonsError };

@@ -17,11 +17,11 @@ type TPokemonCard = {
 	id: number;
 	type: string;
 	values: TValues;
-	active: boolean;
+	active?: boolean;
 	minimize?: boolean;
-	className: string;
+	className?: string;
 	selected?: boolean;
-	onClickCard: () => void;
+	onClickCard?: () => void;
 	possession?: string;
 };
 
