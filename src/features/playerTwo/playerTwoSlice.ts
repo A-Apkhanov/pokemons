@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getCardsPlayerTwo } from './thunks';
 
-import { IPokemons } from '../../types';
+import { TPokemonsPlayerTwo } from '../../types';
 
-const initialState: { data: IPokemons; isLoading: boolean; error: null } = {
+const initialState: {
+	data: TPokemonsPlayerTwo;
+	isLoading: boolean;
+	error: null;
+} = {
 	isLoading: false,
-	data: {},
+	data: [],
 	error: null,
 };
 

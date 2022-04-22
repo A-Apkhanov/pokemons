@@ -43,12 +43,12 @@ export const Header: FC<THeader> = ({ bgActive }) => {
 				const startedPackPokemons = await game.getStartedPackPokemons();
 
 				for (const item of startedPackPokemons) {
-					const newKey = fire.getNewKey(`${userUid}/pokemons/`);
-					await fire.setData(`${userUid}/pokemons/${newKey}`, item);
+					const newKey = await fire.getNewKey(`${userUid}/pokemons/`);
+					newKey && (await fire.setData(`${userUid}/pokemons/${newKey}`, item));
 				}
 			}
 
-			handleClickLogin();
+			setOpenModal((prevState) => !prevState);
 		} catch (error) {
 			console.log('Wrong!', (error as Error).message);
 		}

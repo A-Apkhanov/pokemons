@@ -4,7 +4,7 @@ import { PokemonCard } from '../PokemonCard';
 
 import classnames from 'classnames';
 
-import { TStatePlayer, TCard } from '../../../types';
+import { TPokemonBoardCards, IPokemonBoardCard } from '../../../types';
 
 import style from './style.module.css';
 
@@ -12,8 +12,8 @@ type TPlayer = 1 | 2;
 
 type TPlayerBoard = {
 	player: TPlayer;
-	cards: TStatePlayer;
-	onClickCard: (card: TCard) => void;
+	cards: TPokemonBoardCards;
+	onClickCard: (card: IPokemonBoardCard) => void;
 };
 
 export const PlayerBoard: FC<TPlayerBoard> = ({

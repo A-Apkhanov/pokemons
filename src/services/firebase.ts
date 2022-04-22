@@ -2,6 +2,8 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
+import { IPokemonFire } from '../types';
+
 const firebaseConfig = {
 	apiKey: 'AIzaSyALXHi-phGT0K1v57LW510rZn6uxa_EZZo',
 	authDomain: 'pokemons-18ee2.firebaseapp.com',
@@ -42,7 +44,7 @@ export class Firebase {
 		cb: firebase.Observer<any, Error> | ((a: firebase.User | null) => any)
 	) => this.auth.onAuthStateChanged(cb);
 
-	setData = (url: string, data: any) => {
+	setData = (url: string, data: IPokemonFire) => {
 		this.database.ref(url).set(data);
 	};
 
@@ -53,8 +55,8 @@ export class Firebase {
 			.then((snapshot) => snapshot.val());
 	};
 
-	getNewKey = (url: string) => {
-		return this.database.ref().child(url).push().key;
+	getNewKey = async (url: string): Promise<string | null> => {
+		return await this.database.ref().child(url).push().key;
 	};
 }
 

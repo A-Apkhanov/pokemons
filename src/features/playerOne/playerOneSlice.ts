@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IPokemons } from '../../types';
+import { IPokemonsPlayerOne } from '../../types';
 
-const initialState: { data: IPokemons } = {
+const initialState: { data: IPokemonsPlayerOne } = {
 	data: {},
 };
 
@@ -11,14 +11,14 @@ export const playerOneSlice = createSlice({
 	initialState,
 	reducers: {
 		addCardPlayerOne: (
-			state: { data: IPokemons },
-			action: { payload: IPokemons }
+			state: { data: IPokemonsPlayerOne },
+			action: { payload: IPokemonsPlayerOne }
 		) => ({
 			...state,
 			data: { ...state.data, ...action.payload },
 		}),
 		delCardPlayerOne: (
-			state: { data: IPokemons },
+			state: { data: IPokemonsPlayerOne },
 			action: { payload: string }
 		) => {
 			const copyState = { ...state.data };
@@ -28,7 +28,7 @@ export const playerOneSlice = createSlice({
 				data: { ...copyState },
 			};
 		},
-		resetCardsPlayerOne: (state: { data: IPokemons }) => ({
+		resetCardsPlayerOne: (state: { data: IPokemonsPlayerOne }) => ({
 			...state,
 			data: {},
 		}),

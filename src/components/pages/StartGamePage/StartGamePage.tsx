@@ -18,14 +18,14 @@ import {
 } from '../../../features/playerOne/playerOneSlice';
 import { selectPlayerOneData } from '../../../features/playerOne/selectors';
 
-import { IPokemons } from '../../../types';
+import { IPokemonsGamePack } from '../../../types';
 
 import style from './style.module.css';
 
 export const StartGamePage: FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const [pokemonsState, setPokemonsState] = useState<IPokemons>({});
+	const [pokemonsState, setPokemonsState] = useState<IPokemonsGamePack>({});
 	const isLoading = useSelector(selectPokemonsIsLoading);
 	const pokemons = useSelector(selectPokemonsData);
 	const playerCards = useSelector(selectPlayerOneData);
@@ -40,7 +40,7 @@ export const StartGamePage: FC = () => {
 		if (pokemon.selected) {
 			dispatch(delCardPlayerOne(key));
 		} else {
-			dispatch(addCardPlayerOne({ [key]: pokemon }));
+			dispatch(addCardPlayerOne({ [key]: pokemons[key] }));
 		}
 
 		setPokemonsState((prevState) => ({

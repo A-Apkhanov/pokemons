@@ -17,7 +17,7 @@ import { createPlayerCardArr } from '../../../services/createPlayerCardArr';
 import { counterWin } from '../../../services/counterWin';
 import { game } from '../../../services/game';
 
-import { TStatePlayer, TCard, TBoard } from '../../../types';
+import { TBoard, TPokemonBoardCards, IPokemonBoardCard } from '../../../types';
 
 import style from './style.module.css';
 
@@ -30,12 +30,12 @@ export const BoardGamePage: FC = () => {
 
 	const [board, setBoard] = useState<TBoard>([]);
 
-	const [playerOne, setPlayerOne] = useState<TStatePlayer>(() => {
+	const [playerOne, setPlayerOne] = useState<TPokemonBoardCards>(() => {
 		return createPlayerCardArr(playerOneData, 'blue');
 	});
-	const [playerTwo, setPlayerTwo] = useState<TStatePlayer>([]);
+	const [playerTwo, setPlayerTwo] = useState<TPokemonBoardCards>([]);
 
-	const [choiceCard, setChoiceCard] = useState<TCard | null>(null);
+	const [choiceCard, setChoiceCard] = useState<IPokemonBoardCard | null>(null);
 	const [steps, setSteps] = useState(0);
 
 	const [disabled, setDisabled] = useState(true);

@@ -17,17 +17,13 @@ import { resetCardsPlayerOne } from '../../../features/playerOne/playerOneSlice'
 
 import { fire } from '../../../services/firebase';
 
-import { TCard, TPokemon } from '../../../types';
+import { TPokemonsEnemyPack, IPokemonsPlayerOne } from '../../../types';
 
 import style from './style.module.css';
 
-interface INewCard {
-	[key: string]: TCard | TPokemon;
-}
-
-const writePokemon = async (newCard: INewCard) => {
+const writePokemon = async (newCard: IPokemonsPlayerOne) => {
 	const userUid = localStorage.getItem('userUid');
-	const newKey = fire.getNewKey(`${userUid}/pokemons/`);
+	const newKey = await fire.getNewKey(`${userUid}/pokemons/`);
 	await fire.setData(
 		`${userUid}/pokemons/${newKey}`,
 		Object.entries(newCard)[0][1]
@@ -43,32 +39,40 @@ export const FinishGamePage: FC = () => {
 	const playerOneData = useSelector(selectPlayerOneData);
 	const playerTwoData = useSelector(selectPlayerTwoData);
 
-	const [cardsEnemy, setCardsEnemy] = useState(playerTwoData);
-	const [newCard, setNewCard] = useState<INewCard>({});
+	const [cardsEnemy, setCardsEnemy] =
+		useState<TPokemonsEnemyPack>(playerTwoData);
+	const [newCard, setNewCard] = useState<IPokemonsPlayerOne>({});
 	const [disabled, setDisabled] = useState(true);
 
 	useEffect(() => {
 		!gameStatus && navigate('/game', { replace: true });
 	}, []);
 
-	const handleClickCard = (key: string) => {
-		setCardsEnemy((prevState) => ({
-			...prevState,
-			[key]: {
-				...prevState[key],
-				selected: !prevState[key].selected,
-			},
-		}));
+	useEffect(() => {}, [playerTwoData]);
+
+	const handleClickCard = (index: number) => {
+		setCardsEnemy((prevState) => {
+			const oldPokemon = prevState[index];
+			const newPokemon = {
+				...oldPokemon,
+				selected: !oldPokemon.selected,
+			};
+			return [
+				...prevState.slice(0, index),
+				newPokemon,
+				...prevState.slice(index + 1, prevState.length),
+			];
+		});
 
 		setNewCard((prevState) => {
-			if (prevState[key]) {
+			if (prevState[index]) {
 				const copyState = { ...prevState };
-				delete copyState[key];
+				delete copyState[index];
 				return copyState;
 			}
 			return {
 				...prevState,
-				[key]: cardsEnemy[key],
+				[index]: cardsEnemy[index],
 			};
 		});
 
@@ -119,29 +123,27 @@ export const FinishGamePage: FC = () => {
 				</Button>
 			</div>
 			<div className={style.grid}>
-				{Object.entries(cardsEnemy).map(
-					([key, { name, img, id, type, values, selected }]) => (
-						<PokemonCard
-							key={key}
-							name={name}
-							img={img}
-							id={id}
-							type={type}
-							values={values}
-							active
-							className={style.card}
-							onClickCard={() => {
-								if (
-									gameWinner === 'player1' &&
-									(Object.keys(newCard).length < 1 || selected)
-								) {
-									handleClickCard(key);
-								}
-							}}
-							selected={selected}
-						/>
-					)
-				)}
+				{cardsEnemy.map((item, index) => (
+					<PokemonCard
+						key={index}
+						name={item.name}
+						img={item.img}
+						id={item.id}
+						type={item.type}
+						values={item.values}
+						active
+						className={style.card}
+						onClickCard={() => {
+							if (
+								gameWinner === 'player1' &&
+								(Object.keys(newCard).length < 1 || item.selected)
+							) {
+								handleClickCard(index);
+							}
+						}}
+						selected={item.selected}
+					/>
+				))}
 			</div>
 		</Layout>
 	);

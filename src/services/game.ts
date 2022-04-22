@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TBoard, TCard } from '../types';
+import { TBoard, TCard, TPokemonsAPI } from '../types';
 
 type TParams = {
 	position: number;
@@ -17,7 +17,7 @@ class Game {
 		this.controller = controller;
 	};
 
-	getStartedPackPokemons = async () => {
+	getStartedPackPokemons = async (): Promise<TPokemonsAPI> => {
 		return await axios
 			.get('https://reactmarathon-api.herokuapp.com/api/pokemons/starter', {
 				signal: this.controller?.signal,
@@ -25,7 +25,7 @@ class Game {
 			.then((res) => res.data.data);
 	};
 
-	getEnemyPackPokemons = async () => {
+	getEnemyPackPokemons = async (): Promise<TPokemonsAPI> => {
 		return await axios
 			.get('https://reactmarathon-api.netlify.app/api/create-player', {
 				signal: this.controller?.signal,
