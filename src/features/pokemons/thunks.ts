@@ -2,7 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { fire } from '../../services/firebase';
 
-export const getUserPokemons = createAsyncThunk(
+import { IPokemonsFire } from '../../types';
+
+export const getUserPokemons = createAsyncThunk<IPokemonsFire>(
 	'pokemons/createPokemonsThunk',
 	async () => {
 		const userUid = localStorage.getItem('userUid');

@@ -1,13 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserPokemons } from './thunks';
+import { IPokemonsPlayerOne } from '../../types';
+
+const initialState: {
+	data: IPokemonsPlayerOne;
+	isLoading: boolean;
+	error: null;
+} = {
+	isLoading: false,
+	data: {},
+	error: null,
+};
 
 export const pokemonsSlice = createSlice({
 	name: 'pokemons',
-	initialState: {
-		isLoading: false,
-		data: {},
-		error: null,
-	},
+	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(getUserPokemons.pending, (state) => {

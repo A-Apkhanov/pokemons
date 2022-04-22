@@ -1,7 +1,13 @@
-export function createPlayerCardArr<T, U>(
-	obj: T,
-	possession: U
-): Array<T[keyof T] & { possession: U; key: string }> {
+import {
+	IPokemonsPlayerOne,
+	TPokemonsPlayerTwo,
+	TPokemonBoardCards,
+} from '../types';
+
+export function createPlayerCardArr(
+	obj: IPokemonsPlayerOne | TPokemonsPlayerTwo,
+	possession: 'blue' | 'red'
+): TPokemonBoardCards {
 	const copyArr = Object.entries(obj);
 	const newArr = [];
 	for (let item of copyArr) {
