@@ -55,8 +55,8 @@ export class Firebase {
 			.then((snapshot) => snapshot.val());
 	};
 
-	getNewKey = async (url: string): Promise<string | null> => {
-		return await this.database.ref().child(url).push().key;
+	getNewKey = (url: string) => {
+		return this.database.ref().child(url).push().key;
 	};
 }
 

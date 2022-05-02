@@ -23,7 +23,7 @@ import style from './style.module.css';
 
 const writePokemon = async (newCard: IPokemonsPlayerOne) => {
 	const userUid = localStorage.getItem('userUid');
-	const newKey = await fire.getNewKey(`${userUid}/pokemons/`);
+	const newKey = fire.getNewKey(`${userUid}/pokemons/`);
 	await fire.setData(
 		`${userUid}/pokemons/${newKey}`,
 		Object.entries(newCard)[0][1]
