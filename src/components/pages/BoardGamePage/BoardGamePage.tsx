@@ -4,9 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { PlayerBoard } from '../../organisms/PlayerBoard';
 import { PokemonCard } from '../../organisms/PokemonCard';
+import { Result } from '../../atoms/Result';
+import { ArrowChoice } from '../../atoms/ArrowChoice';
 
 import { selectPlayerOneData } from '../../../features/playerOne/selectors';
-import { selectPlayerTwoData } from '../../../features/playerTwo/selectors';
+import {
+	selectPlayerTwoData,
+	selectPlayerTwoIsLoading,
+} from '../../../features/playerTwo/selectors';
 import { getCardsPlayerTwo } from '../../../features/playerTwo/thunks';
 import {
 	defineWinner,
@@ -27,6 +32,7 @@ export const BoardGamePage: FC = () => {
 
 	const playerOneData = useSelector(selectPlayerOneData);
 	const playerTwoData = useSelector(selectPlayerTwoData);
+	const playerTwoIsLoading = useSelector(selectPlayerTwoIsLoading);
 
 	const [board, setBoard] = useState<TBoard>([]);
 
@@ -37,6 +43,9 @@ export const BoardGamePage: FC = () => {
 
 	const [choiceCard, setChoiceCard] = useState<IPokemonBoardCard | null>(null);
 	const [steps, setSteps] = useState(0);
+
+	const [side, setSide] = useState<null | 0 | 1 | 2>(null);
+	const [result, setResult] = useState<null | 'win' | 'lose' | 'draw'>(null);
 
 	const [disabled, setDisabled] = useState(true);
 
@@ -86,22 +95,43 @@ export const BoardGamePage: FC = () => {
 	}, [playerTwoData]);
 
 	useEffect(() => {
+		if (!playerTwoIsLoading && side === null) {
+			setSide(0);
+		}
+
+		if (!playerTwoIsLoading && side === 0) {
+			const random = (Math.floor(Math.random() * 2) + 1) as 1 | 2;
+
+			const timer1 = setTimeout(() => setSide(random), 2000);
+			const timer2 = setTimeout(() => setSide(null), 4000);
+
+			return () => {
+				clearTimeout(timer1);
+				clearTimeout(timer2);
+			};
+		}
+	}, [playerTwoIsLoading]);
+
+	useEffect(() => {
 		if (steps === 9) {
 			const [count1, count2] = counterWin(board, playerOne, playerTwo);
+			const timer = setTimeout(() => navigate('/game/finish'), 3000);
 
 			if (count1 > count2) {
-				alert('WIN');
 				dispatch(defineWinner('player1'));
+				setResult('win');
 			} else if (count1 < count2) {
-				alert('LOSE');
 				dispatch(defineWinner('player2'));
+				setResult('lose');
 			} else {
-				alert('DRAW');
+				setResult('draw');
 			}
 
 			dispatch(changeStatusGame(true));
 
-			navigate('/game/finish');
+			return () => {
+				clearTimeout(timer);
+			};
 		}
 	}, [steps]);
 
@@ -117,6 +147,8 @@ export const BoardGamePage: FC = () => {
 
 	return (
 		<div className={style.root}>
+			{side !== null && <ArrowChoice side={side} />}
+			{result && <Result type={result} />}
 			<div className={style.playerOne}>
 				<PlayerBoard
 					player={1}
