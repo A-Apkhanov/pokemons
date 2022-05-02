@@ -15,7 +15,9 @@ import { updateUser } from './features/user/thunks';
 
 export const App: FC = () => {
 	const dispatch = useDispatch();
-	const match = useMatch('/game/*');
+	const matchGame = useMatch('/game/*');
+	const matchBoard = useMatch('/game/board');
+	const headerBgActive = matchBoard ? false : !!matchGame;
 
 	useEffect(() => {
 		dispatch(updateUser());
@@ -23,7 +25,7 @@ export const App: FC = () => {
 
 	return (
 		<>
-			<Header bgActive={!!match} />
+			<Header bgActive={headerBgActive} />
 			<Routes>
 				<Route path='/' element={<MainPage />} />
 				<Route path='/home' element={<MainPage />} />
@@ -46,7 +48,7 @@ export const App: FC = () => {
 					}
 				/>
 			</Routes>
-			<Footer />
+			<Footer hidden={!!matchBoard} />
 		</>
 	);
 };
