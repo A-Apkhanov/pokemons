@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { TBoard, TCard, TPokemonsAPI } from '../types';
+import { TBoard, IPokemonBoardCard, TPokemonsAPI } from '../types';
 
 type TParams = {
 	position: number;
-	card: TCard;
+	card: IPokemonBoardCard;
 	board: TBoard;
 };
 

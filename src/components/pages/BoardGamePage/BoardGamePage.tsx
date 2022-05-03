@@ -5,13 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PlayerBoard } from '../../organisms/PlayerBoard';
 import { PokemonCard } from '../../organisms/PokemonCard';
 import { Result } from '../../atoms/Result';
-import { ArrowChoice } from '../../atoms/ArrowChoice';
 
 import { selectPlayerOneData } from '../../../features/playerOne/selectors';
-import {
-	selectPlayerTwoData,
-	selectPlayerTwoIsLoading,
-} from '../../../features/playerTwo/selectors';
+import { selectPlayerTwoData } from '../../../features/playerTwo/selectors';
 import { getCardsPlayerTwo } from '../../../features/playerTwo/thunks';
 import {
 	defineWinner,
@@ -32,7 +28,6 @@ export const BoardGamePage: FC = () => {
 
 	const playerOneData = useSelector(selectPlayerOneData);
 	const playerTwoData = useSelector(selectPlayerTwoData);
-	const playerTwoIsLoading = useSelector(selectPlayerTwoIsLoading);
 
 	const [board, setBoard] = useState<TBoard>([]);
 
@@ -44,7 +39,6 @@ export const BoardGamePage: FC = () => {
 	const [choiceCard, setChoiceCard] = useState<IPokemonBoardCard | null>(null);
 	const [steps, setSteps] = useState(0);
 
-	const [side, setSide] = useState<null | 0 | 1 | 2>(null);
 	const [result, setResult] = useState<null | 'win' | 'lose' | 'draw'>(null);
 
 	const [disabled, setDisabled] = useState(true);
@@ -62,17 +56,55 @@ export const BoardGamePage: FC = () => {
 
 				if (choiceCard.player === 1) {
 					setPlayerOne((prevState) =>
-						prevState.filter((item) => item.id !== choiceCard.id)
-					);
-				}
-				if (choiceCard.player === 2) {
-					setPlayerTwo((prevState) =>
-						prevState.filter((item) => item.id !== choiceCard.id)
+						prevState.filter((item) => item.key !== choiceCard.key)
 					);
 				}
 
+				{
+					const emptyCells = [
+						newBoard[position - 4],
+						newBoard[position - 2],
+						newBoard[position],
+						newBoard[position + 2],
+					].filter((item) => item && item.card === null);
+
+					const enemyPosition =
+						emptyCells[Math.floor(Math.random() * emptyCells.length)].position;
+
+					const enemyCards = playerTwo.filter((item) => {
+						switch (enemyPosition - position) {
+							case 1:
+								return item.values.left > choiceCard.values.right;
+							case 3:
+								return item.values.bottom > choiceCard.values.top;
+							case -1:
+								return item.values.right > choiceCard.values.left;
+							case -3:
+								return item.values.top > choiceCard.values.bottom;
+							default:
+								alert('Нет таких значений');
+						}
+					});
+
+					const enemyCard =
+						enemyCards[Math.floor(Math.random() * enemyCards.length)];
+
+					const params = {
+						position: enemyPosition,
+						card: { ...enemyCard, player: 2 as 1 | 2 },
+						board: newBoard,
+					};
+
+					setPlayerTwo((prevState) =>
+						prevState.filter((item) => item.key !== enemyCard.key)
+					);
+
+					const testBoard = await game.updateBoard(params);
+
+					setBoard(testBoard);
+				}
+
 				setDisabled(false);
-				setBoard(newBoard);
 				setSteps((prevStep) => prevStep + 1);
 			}
 		}
@@ -93,24 +125,6 @@ export const BoardGamePage: FC = () => {
 			return createPlayerCardArr(playerTwoData, 'red');
 		});
 	}, [playerTwoData]);
-
-	useEffect(() => {
-		if (!playerTwoIsLoading && side === null) {
-			setSide(0);
-		}
-
-		if (!playerTwoIsLoading && side === 0) {
-			const random = (Math.floor(Math.random() * 2) + 1) as 1 | 2;
-
-			const timer1 = setTimeout(() => setSide(random), 2000);
-			const timer2 = setTimeout(() => setSide(null), 4000);
-
-			return () => {
-				clearTimeout(timer1);
-				clearTimeout(timer2);
-			};
-		}
-	}, [playerTwoIsLoading]);
 
 	useEffect(() => {
 		if (steps === 9) {
@@ -147,7 +161,6 @@ export const BoardGamePage: FC = () => {
 
 	return (
 		<div className={style.root}>
-			{side !== null && <ArrowChoice side={side} />}
 			{result && <Result type={result} />}
 			<div className={style.playerOne}>
 				<PlayerBoard
@@ -184,14 +197,7 @@ export const BoardGamePage: FC = () => {
 				))}
 			</div>
 			<div className={style.playerTwo}>
-				<PlayerBoard
-					player={2}
-					cards={playerTwo}
-					onClickCard={(card) => {
-						setChoiceCard(card);
-						setDisabled(true);
-					}}
-				/>
+				<PlayerBoard player={2} cards={playerTwo} />
 			</div>
 		</div>
 	);

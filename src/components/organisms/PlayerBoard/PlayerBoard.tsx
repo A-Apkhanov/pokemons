@@ -13,7 +13,7 @@ type TPlayer = 1 | 2;
 type TPlayerBoard = {
 	player: TPlayer;
 	cards: TPokemonBoardCards;
-	onClickCard: (card: IPokemonBoardCard) => void;
+	onClickCard?: (card: IPokemonBoardCard) => void;
 };
 
 export const PlayerBoard: FC<TPlayerBoard> = ({
