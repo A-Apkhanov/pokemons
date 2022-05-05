@@ -46,10 +46,10 @@ export interface IPokemonAPI {
 	};
 	type: string;
 	values: {
-		bottom: number;
-		left: number;
-		right: number;
-		top: number;
+		bottom: number | string;
+		left: number | string;
+		right: number | string;
+		top: number | string;
 	};
 	weight: number;
 }

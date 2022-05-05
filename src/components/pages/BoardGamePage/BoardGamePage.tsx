@@ -54,58 +54,130 @@ export const BoardGamePage: FC = () => {
 
 				const newBoard = await game.updateBoard(params);
 
+				setBoard(newBoard);
+
 				if (choiceCard.player === 1) {
 					setPlayerOne((prevState) =>
 						prevState.filter((item) => item.key !== choiceCard.key)
 					);
+					setSteps((prevStep) => prevStep + 1);
 				}
 
-				{
-					const emptyCells = [
-						newBoard[position - 4],
-						newBoard[position - 2],
-						newBoard[position],
-						newBoard[position + 2],
-					].filter((item) => item && item.card === null);
+				if (!!newBoard.filter((item) => item.card === null).length) {
+					const matrix = [
+						[1, 2, 3],
+						[4, 5, 6],
+						[7, 8, 9],
+					];
 
-					const enemyPosition =
-						emptyCells[Math.floor(Math.random() * emptyCells.length)].position;
+					const heroPosition = {
+						i: Math.floor((position - 1) / 3),
+						j: (position - 1) % 3,
+					};
 
+					const top = matrix[heroPosition.i - 1]
+						? matrix[heroPosition.i - 1][heroPosition.j]
+						: null;
+					const right = matrix[heroPosition.i][heroPosition.j + 1] || null;
+					const bottom = matrix[heroPosition.i + 1]
+						? matrix[heroPosition.i + 1][heroPosition.j]
+						: null;
+					const left = matrix[heroPosition.i][heroPosition.j - 1] || null;
+
+					//возможные позиции куда можно поставить карту противника
+					const coordinates = [top, right, left, bottom].filter(
+						(item) => item !== null
+					) as number[];
+
+					//пустые позиции на поле
+					const emptyCells = newBoard.filter((item) => item.card === null);
+
+					//соседние пустые позиции
+					const adjacentEmptyCells = emptyCells.filter((item) =>
+						coordinates.includes(item.position)
+					);
+
+					//позиция куда поставить карту противника
+					const enemyCell = adjacentEmptyCells.length
+						? adjacentEmptyCells[
+								Math.floor(Math.random() * adjacentEmptyCells.length)
+						  ]
+						: emptyCells[Math.floor(Math.random() * emptyCells.length)];
+
+					//номер позиции куда поставить карту противника
+					const enemyPosition = {
+						i: Math.floor((enemyCell.position - 1) / 3),
+						j: (enemyCell.position - 1) % 3,
+					};
+
+					//разница позиций героя и противника
+					const defVer = enemyPosition.i - heroPosition.i;
+					const defHor = enemyPosition.j - heroPosition.j;
+
+					//набор карт которые противник может положить
 					const enemyCards = playerTwo.filter((item) => {
-						switch (enemyPosition - position) {
-							case 1:
-								return item.values.left > choiceCard.values.right;
-							case 3:
-								return item.values.bottom > choiceCard.values.top;
-							case -1:
-								return item.values.right > choiceCard.values.left;
-							case -3:
-								return item.values.top > choiceCard.values.bottom;
-							default:
-								alert('Нет таких значений');
-						}
+						if (
+							defVer === -1 &&
+							defHor === 0 &&
+							parseInt(`${item.values.bottom}`, 16) >
+								parseInt(`${choiceCard.values.top}`, 16)
+						)
+							return true;
+
+						if (
+							defVer === 0 &&
+							defHor === 1 &&
+							parseInt(`${item.values.left}`, 16) >
+								parseInt(`${choiceCard.values.right}`, 16)
+						)
+							return true;
+
+						if (
+							defVer === 1 &&
+							defHor === 0 &&
+							parseInt(`${item.values.top}`, 16) >
+								parseInt(`${choiceCard.values.bottom}`, 16)
+						)
+							return true;
+
+						if (
+							defVer === 0 &&
+							defHor === -1 &&
+							parseInt(`${item.values.right}`, 16) >
+								parseInt(`${choiceCard.values.left}`, 16)
+						)
+							return true;
+
+						return true;
 					});
 
+					//карта которую положит противник
 					const enemyCard =
 						enemyCards[Math.floor(Math.random() * enemyCards.length)];
 
+					//параметры для запроса обновленного поля
 					const params = {
-						position: enemyPosition,
+						position: matrix[enemyPosition.i][enemyPosition.j],
 						card: { ...enemyCard, player: 2 as 1 | 2 },
 						board: newBoard,
 					};
 
+					//обновление руки противника после хода
 					setPlayerTwo((prevState) =>
 						prevState.filter((item) => item.key !== enemyCard.key)
 					);
 
+					//обновленное поле после хода противника
 					const testBoard = await game.updateBoard(params);
 
+					//обновление поля в состоянии
 					setBoard(testBoard);
+
+					//изменение количества шагов
+					setSteps((prevStep) => prevStep + 1);
 				}
 
 				setDisabled(false);
-				setSteps((prevStep) => prevStep + 1);
 			}
 		}
 	};
@@ -128,16 +200,20 @@ export const BoardGamePage: FC = () => {
 
 	useEffect(() => {
 		if (steps === 9) {
-			const [count1, count2] = counterWin(board, playerOne, playerTwo);
+			const [count1, count2] = counterWin(board);
 			const timer = setTimeout(() => navigate('/game/finish'), 3000);
+
+			console.log('####: count1, count2', count1, count2);
 
 			if (count1 > count2) {
 				dispatch(defineWinner('player1'));
 				setResult('win');
-			} else if (count1 < count2) {
+			}
+			if (count1 < count2) {
 				dispatch(defineWinner('player2'));
 				setResult('lose');
-			} else {
+			}
+			if (count1 === count2) {
 				setResult('draw');
 			}
 

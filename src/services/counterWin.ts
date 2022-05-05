@@ -1,12 +1,8 @@
-import { TBoard, TStatePlayer } from '../types';
+import { TBoard } from '../types';
 
-export function counterWin(
-	board: TBoard,
-	playerOne: TStatePlayer,
-	playerTwo: TStatePlayer
-) {
-	let playerOneCount = playerOne.length;
-	let playerTwoCount = playerTwo.length;
+export function counterWin(board: TBoard) {
+	let playerOneCount = 0;
+	let playerTwoCount = 0;
 
 	board.forEach((item) => {
 		if (item.card.possession === 'blue') {
