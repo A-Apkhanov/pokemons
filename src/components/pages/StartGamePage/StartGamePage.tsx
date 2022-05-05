@@ -89,9 +89,11 @@ export const StartGamePage: FC = () => {
 									values={values}
 									active
 									className={style.card}
-									onClickCard={() => {
-										handleClickCard(key);
-									}}
+                  onClickCard={() => {
+                    if (Object.keys(playerCards).length < 5 || !!selected) {
+                      handleClickCard(key)
+                    }
+                  }}
 									selected={selected}
 								/>
 							)

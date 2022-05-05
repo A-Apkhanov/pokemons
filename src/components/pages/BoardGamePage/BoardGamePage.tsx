@@ -5,13 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PlayerBoard } from '../../organisms/PlayerBoard';
 import { PokemonCard } from '../../organisms/PokemonCard';
 import { Result } from '../../atoms/Result';
-import { ArrowChoice } from '../../atoms/ArrowChoice';
 
 import { selectPlayerOneData } from '../../../features/playerOne/selectors';
-import {
-	selectPlayerTwoData,
-	selectPlayerTwoIsLoading,
-} from '../../../features/playerTwo/selectors';
+import { selectPlayerTwoData } from '../../../features/playerTwo/selectors';
 import { getCardsPlayerTwo } from '../../../features/playerTwo/thunks';
 import {
 	defineWinner,
@@ -32,7 +28,6 @@ export const BoardGamePage: FC = () => {
 
 	const playerOneData = useSelector(selectPlayerOneData);
 	const playerTwoData = useSelector(selectPlayerTwoData);
-	const playerTwoIsLoading = useSelector(selectPlayerTwoIsLoading);
 
 	const [board, setBoard] = useState<TBoard>([]);
 
@@ -43,38 +38,134 @@ export const BoardGamePage: FC = () => {
 
 	const [choiceCard, setChoiceCard] = useState<IPokemonBoardCard | null>(null);
 	const [steps, setSteps] = useState(0);
+	const [position, setPosition] = useState(0);
 
-	const [side, setSide] = useState<null | 0 | 1 | 2>(null);
 	const [result, setResult] = useState<null | 'win' | 'lose' | 'draw'>(null);
 
 	const [disabled, setDisabled] = useState(true);
 
+	async function stepEnemy() {
+		if (
+			playerOne.length < 5 &&
+			!!board.filter((item) => item.card === null).length
+		) {
+			const matrix = [
+				[1, 2, 3],
+				[4, 5, 6],
+				[7, 8, 9],
+			];
+
+			const heroPosition = {
+				i: Math.floor((position - 1) / 3),
+				j: (position - 1) % 3,
+			};
+
+			const top = matrix[heroPosition.i - 1]
+				? matrix[heroPosition.i - 1][heroPosition.j]
+				: null;
+			const right = matrix[heroPosition.i][heroPosition.j + 1] || null;
+			const bottom = matrix[heroPosition.i + 1]
+				? matrix[heroPosition.i + 1][heroPosition.j]
+				: null;
+			const left = matrix[heroPosition.i][heroPosition.j - 1] || null;
+
+			const coordinates = [top, right, left, bottom].filter(
+				(item) => item !== null
+			) as number[];
+
+			const emptyCells = board.filter((item) => item.card === null);
+
+			const adjacentEmptyCells = emptyCells.filter((item) =>
+				coordinates.includes(item.position)
+			);
+
+			const enemyCell = adjacentEmptyCells.length
+				? adjacentEmptyCells[
+						Math.floor(Math.random() * adjacentEmptyCells.length)
+				  ]
+				: emptyCells[Math.floor(Math.random() * emptyCells.length)];
+
+			const enemyPosition = {
+				i: Math.floor((enemyCell.position - 1) / 3),
+				j: (enemyCell.position - 1) % 3,
+			};
+
+			const defVer = enemyPosition.i - heroPosition.i;
+			const defHor = enemyPosition.j - heroPosition.j;
+
+			const enemyCards = playerTwo.filter((item) => {
+				if (
+					defVer === -1 &&
+					defHor === 0 &&
+					parseInt(`${item.values.bottom}`, 16) >
+						parseInt(`${choiceCard?.values.top}`, 16)
+				)
+					return true;
+
+				if (
+					defVer === 0 &&
+					defHor === 1 &&
+					parseInt(`${item.values.left}`, 16) >
+						parseInt(`${choiceCard?.values.right}`, 16)
+				)
+					return true;
+
+				if (
+					defVer === 1 &&
+					defHor === 0 &&
+					parseInt(`${item.values.top}`, 16) >
+						parseInt(`${choiceCard?.values.bottom}`, 16)
+				)
+					return true;
+
+				if (
+					defVer === 0 &&
+					defHor === -1 &&
+					parseInt(`${item.values.right}`, 16) >
+						parseInt(`${choiceCard?.values.left}`, 16)
+				)
+					return true;
+
+				return true;
+			});
+
+			const enemyCard =
+				enemyCards[Math.floor(Math.random() * enemyCards.length)];
+
+			const params = {
+				position: matrix[enemyPosition.i][enemyPosition.j],
+				card: { ...enemyCard, player: 2 as 1 | 2 },
+				board: board,
+			};
+
+			const newBoard = await game.updateBoard(params);
+
+			setBoard(() => newBoard);
+			setPlayerTwo((prevState) =>
+				prevState.filter((item) => item.key !== enemyCard.key)
+			);
+			setSteps((prevStep) => prevStep + 1);
+			setDisabled(() => true);
+		}
+	}
+
 	const handleClickBoardPlate = async (position: number) => {
-		if (disabled) {
-			if (choiceCard) {
-				const params = {
-					position,
-					card: choiceCard,
-					board,
-				};
+		setDisabled(() => false);
 
-				const newBoard = await game.updateBoard(params);
+		if (choiceCard) {
+			const params = {
+				position,
+				card: choiceCard,
+				board,
+			};
+			const newBoard = await game.updateBoard(params);
 
-				if (choiceCard.player === 1) {
-					setPlayerOne((prevState) =>
-						prevState.filter((item) => item.id !== choiceCard.id)
-					);
-				}
-				if (choiceCard.player === 2) {
-					setPlayerTwo((prevState) =>
-						prevState.filter((item) => item.id !== choiceCard.id)
-					);
-				}
-
-				setDisabled(false);
-				setBoard(newBoard);
-				setSteps((prevStep) => prevStep + 1);
-			}
+			setPosition(position);
+			setBoard(() => newBoard);
+			setPlayerOne((prevState) =>
+				prevState.filter((item) => item.key !== choiceCard.key)
+			);
+			setSteps((prevStep) => prevStep + 1);
 		}
 	};
 
@@ -89,41 +180,26 @@ export const BoardGamePage: FC = () => {
 	}, []);
 
 	useEffect(() => {
+		setDisabled(true);
 		setPlayerTwo(() => {
 			return createPlayerCardArr(playerTwoData, 'red');
 		});
 	}, [playerTwoData]);
 
 	useEffect(() => {
-		if (!playerTwoIsLoading && side === null) {
-			setSide(0);
-		}
-
-		if (!playerTwoIsLoading && side === 0) {
-			const random = (Math.floor(Math.random() * 2) + 1) as 1 | 2;
-
-			const timer1 = setTimeout(() => setSide(random), 2000);
-			const timer2 = setTimeout(() => setSide(null), 4000);
-
-			return () => {
-				clearTimeout(timer1);
-				clearTimeout(timer2);
-			};
-		}
-	}, [playerTwoIsLoading]);
-
-	useEffect(() => {
 		if (steps === 9) {
-			const [count1, count2] = counterWin(board, playerOne, playerTwo);
+			const [count1, count2] = counterWin(board);
 			const timer = setTimeout(() => navigate('/game/finish'), 3000);
 
 			if (count1 > count2) {
 				dispatch(defineWinner('player1'));
 				setResult('win');
-			} else if (count1 < count2) {
+			}
+			if (count1 < count2) {
 				dispatch(defineWinner('player2'));
 				setResult('lose');
-			} else {
+			}
+			if (count1 === count2) {
 				setResult('draw');
 			}
 
@@ -134,6 +210,12 @@ export const BoardGamePage: FC = () => {
 			};
 		}
 	}, [steps]);
+
+	useEffect(() => {
+		if (playerOne.length < 5) {
+			stepEnemy();
+		}
+	}, [playerOne]);
 
 	useEffect(() => {
 		const abortController = new AbortController();
@@ -147,7 +229,6 @@ export const BoardGamePage: FC = () => {
 
 	return (
 		<div className={style.root}>
-			{side !== null && <ArrowChoice side={side} />}
 			{result && <Result type={result} />}
 			<div className={style.playerOne}>
 				<PlayerBoard
@@ -155,7 +236,6 @@ export const BoardGamePage: FC = () => {
 					cards={playerOne}
 					onClickCard={(card) => {
 						setChoiceCard(card);
-						setDisabled(true);
 					}}
 				/>
 			</div>
@@ -165,7 +245,9 @@ export const BoardGamePage: FC = () => {
 						style={{ disabled: disabled } as CSSProperties}
 						key={item.position}
 						className={style.boardPlate}
-						onClick={() => !item.card && handleClickBoardPlate(item.position)}
+						onClick={() =>
+							disabled && !item.card && handleClickBoardPlate(item.position)
+						}
 					>
 						{item.card && (
 							<PokemonCard
@@ -184,14 +266,7 @@ export const BoardGamePage: FC = () => {
 				))}
 			</div>
 			<div className={style.playerTwo}>
-				<PlayerBoard
-					player={2}
-					cards={playerTwo}
-					onClickCard={(card) => {
-						setChoiceCard(card);
-						setDisabled(true);
-					}}
-				/>
+				<PlayerBoard player={2} cards={playerTwo} />
 			</div>
 		</div>
 	);

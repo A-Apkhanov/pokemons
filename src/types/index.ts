@@ -25,16 +25,6 @@ export type TPokemon = {
 	selected?: boolean;
 };
 
-export type TCard = TPokemon & {
-	possession: string;
-	key: string;
-	player?: 1 | 2;
-};
-
-export type TBoard = { position: number; card: TCard }[];
-
-export type TStatePlayer = TCard[];
-
 ///
 
 //то что хранится в API
@@ -56,10 +46,10 @@ export interface IPokemonAPI {
 	};
 	type: string;
 	values: {
-		bottom: number;
-		left: number;
-		right: number;
-		top: number;
+		bottom: number | string;
+		left: number | string;
+		right: number | string;
+		top: number | string;
 	};
 	weight: number;
 }
@@ -94,7 +84,7 @@ export interface IPokemonsGamePack {
 }
 
 //то что хранится в State BoardGamePage
-export interface IPokemonBoardCard extends IPokemonAPI {
+export interface IPokemonBoardCard extends IPokemonWithSelected {
 	possession: 'blue' | 'red';
 	key: string;
 	player?: 1 | 2;
@@ -103,3 +93,7 @@ export type TPokemonBoardCards = IPokemonBoardCard[];
 
 //то что хранится в State FinishGamePage
 export type TPokemonsEnemyPack = IPokemonWithSelected[];
+
+export type TBoard = { position: number; card: IPokemonBoardCard }[];
+
+export type TStatePlayer = IPokemonBoardCard[];
