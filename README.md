@@ -11,6 +11,7 @@
 * TypeScript
 
 **Примеры работы приложения:**
+
 <img width="1150" alt="MainPage" src="https://user-images.githubusercontent.com/65610825/167180413-b9ee800f-c7a2-4e61-aec8-b35153d32d9f.png">
 <img width="1150" alt="RulePage" src="https://user-images.githubusercontent.com/65610825/167180556-d57404b4-a5a2-4459-84cf-56063a2a820d.png">
 <img width="1150" alt="UserPage" src="https://user-images.githubusercontent.com/65610825/167180760-eb7784c3-f5dd-4aac-9ea6-81c07ff7177c.png">
