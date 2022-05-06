@@ -1,46 +1,22 @@
-# Getting Started with Create React App
+# [Pokemons-Game](https://pokemons-game.vercel.app/) 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Pokemons-Game - это карточная игра по мотивам полюбившемся всем аниме сериалу ###
 
-## Available Scripts
+Целью игры является захватить как можно больше карт противника на поле 3х3 и не отдать своих покемонов. Вам придется побороться с противником за право обладать новыми покемонами.
 
-In the project directory, you can run:
+**Технологический стек:**
+* React
+* Redux
+* FireBase
+* TypeScript
 
-### `npm start`
+**Примеры работы приложения:**
+<img width="1150" alt="MainPage" src="https://user-images.githubusercontent.com/65610825/167180413-b9ee800f-c7a2-4e61-aec8-b35153d32d9f.png">
+<img width="1150" alt="RulePage" src="https://user-images.githubusercontent.com/65610825/167180556-d57404b4-a5a2-4459-84cf-56063a2a820d.png">
+<img width="1150" alt="UserPage" src="https://user-images.githubusercontent.com/65610825/167180760-eb7784c3-f5dd-4aac-9ea6-81c07ff7177c.png">
+<img width="1150" alt="StartGamePage" src="https://user-images.githubusercontent.com/65610825/167180959-9c4173dc-b6a9-4317-becd-dae91ff6e029.png">
+<img width="1150" alt="BoardGamePage" src="https://user-images.githubusercontent.com/65610825/167181041-c7d76d87-84bd-4f6f-9c17-22c4af8a3637.png">
+<img width="1150" alt="StatusGamePage" src="https://user-images.githubusercontent.com/65610825/167181559-91fa63a4-7e3c-495a-bb6b-85befa5d4a92.png">
+<img width="1150" alt="FinishGamePage" src="https://user-images.githubusercontent.com/65610825/167181419-0ae167cd-9e6a-4233-9141-843bb08bac1b.png">
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
