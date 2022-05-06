@@ -45,7 +45,6 @@ export const Header: FC<THeader> = ({ bgActive }) => {
 				for (const item of startedPackPokemons) {
 					const newKey = fire.getNewKey(`${userUid}/pokemons/`);
 					newKey && fire.setData(`${userUid}/pokemons/${newKey}`, item);
-					console.log('####: item', item);
 				}
 			}
 
