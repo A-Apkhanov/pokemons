@@ -155,6 +155,7 @@
     font-size: 2.5rem;
     color: transparent;
     transition: color 200ms;
+    vertical-align: top;
 }
 
 .menuContainer ul li a:hover::after {

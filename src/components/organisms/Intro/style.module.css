@@ -127,6 +127,7 @@
     color: #fafafa;
     line-height: 65px;
     margin-bottom: 6px;
+    margin-left: -0.08em;
 }
 
 .container p {
@@ -135,6 +136,7 @@
     color: #fafafa;
     line-height: 32px;
     margin-bottom: 20px;
+    margin-left: -0.08em;
 }
 
 @media only screen and (max-width: 649px) {
