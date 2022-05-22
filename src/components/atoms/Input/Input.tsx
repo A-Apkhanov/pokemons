@@ -10,6 +10,7 @@ type TInput = {
 	label: string;
 	name: string;
 	type?: string;
+	minlength?: number;
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -18,6 +19,7 @@ export const Input: FC<TInput> = ({
 	label,
 	type = 'text',
 	name,
+	minlength = 0,
 	onChange,
 }) => {
 	const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +33,7 @@ export const Input: FC<TInput> = ({
 				value={value}
 				className={classnames(style.input, { [style.valid]: !!value })}
 				onChange={handleChangeInput}
+				minLength={minlength}
 				required
 			/>
 			<span className={style.highlight}></span>
