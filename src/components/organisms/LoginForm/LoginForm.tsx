@@ -60,6 +60,7 @@ export const LoginForm: FC<TLoginForm> = ({
 				value={password}
 				type='password'
 				name='password'
+				minlength={6}
 				onChange={handleChangePassword}
 			/>
 			<div className={style.wrapper}>
